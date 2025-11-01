@@ -1108,25 +1108,25 @@ class QuizContent extends StatelessWidget {
               children: [
                 QuizChoiceButton(
                   text: choices.isNotEmpty ? choices[0] : '',
-                  color: Colors.blue,
+                  color: const Color.fromARGB(255, 21, 3, 183),
                   onPressed: () =>
                       state.checkAnswer(choices[0]),
                 ),
                 QuizChoiceButton(
                   text: choices.isNotEmpty ? choices[1] : '',
-                  color: Colors.red,
+                  color: const Color.fromARGB(255, 2, 98, 24),
                   onPressed: () =>
                       state.checkAnswer(choices[1]),
                 ),
                 QuizChoiceButton(
                   text: choices.isNotEmpty ? choices[2] : '',
-                  color: Colors.yellow,
+                  color: const Color.fromARGB(255, 112, 102, 6),
                   onPressed: () =>
                       state.checkAnswer(choices[2]),
                 ),
                 QuizChoiceButton(
                   text: choices.isNotEmpty ? choices[3] : '',
-                  color: Colors.pink,
+                  color: const Color.fromARGB(255, 154, 2, 52),
                   onPressed: () =>
                       state.checkAnswer(choices[3]),
                 ),
@@ -1174,7 +1174,7 @@ class QuizChoiceButton extends StatelessWidget {
           fit: BoxFit.contain,
           child: Text(
             text,
-            style: const TextStyle(
+            style: const TextStyle(fontSize: 70,
               fontWeight: FontWeight.w900,
               color: Colors.white,
               // الخط الضخم جداً سيتم التحكم به بواسطة FittedBox
