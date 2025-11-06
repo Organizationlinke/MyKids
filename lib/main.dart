@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mykids/ocr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -410,10 +411,10 @@ class AppState extends ChangeNotifier {
   }
 
   // دالة تشغيل صوت السؤال
-  void playQuestionAudio() {
+  void playQuestionAudio() async{
     if (_currentQuestion?.mp3Url != null &&
         _currentQuestion!.mp3Url!.isNotEmpty) {
-      _questionAudioPlayer.play(UrlSource(_currentQuestion!.mp3Url!));
+      await _questionAudioPlayer.play(UrlSource(_currentQuestion!.mp3Url!));
     }
   }
 
@@ -572,6 +573,12 @@ class UserSelectionScreen extends StatelessWidget {
     final state = context.watch<AppState>();
 
     return Scaffold(
+      floatingActionButton: IconButton(onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AuthWrapper()),
+            );
+      }, icon: Icon(Icons.abc)),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
