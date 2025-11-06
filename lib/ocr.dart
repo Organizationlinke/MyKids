@@ -747,6 +747,8 @@
 //   }
 // }
 import 'dart:async';
+import 'dart:io'; // تمت الإضافة للتحقق من نظام التشغيل
+import 'package:flutter/foundation.dart'; // تمت الإضافة لاستخدام WriteBuffer
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -888,6 +890,14 @@ class _OCRScannerScreenState extends State<OCRScannerScreen> {
     );
 
     await _cameraController!.initialize();
+ await _cameraController!.setFocusMode(FocusMode.auto);
+    // --- (التعديل: إضافة التركيز التلقائي) ---
+    // التأكد من أن الجهاز يدعم التركيز التلقائي ثم تفعيله
+    // if (_cameraController!.value.focusModeSupported(FocusMode.auto)) {
+     
+    // }
+    // --- (نهاية التعديل) ---
+
     setState(() => _isCameraInitialized = true);
 
     _cameraController!.startImageStream(_processImageStream);
@@ -904,7 +914,11 @@ class _OCRScannerScreenState extends State<OCRScannerScreen> {
 
     try {
       final inputImage = _createInputImageFromCameraImage(image);
-      if (inputImage == null) return;
+      if (inputImage == null) {
+        // تمت إضافة هذا السطر لإنهاء المعالجة مبكراً إذا فشلت
+        setState(() => _isProcessing = false);
+        return;
+      }
 
       final RecognizedText recognizedText =
           await _textRecognizer!.processImage(inputImage);
@@ -936,28 +950,90 @@ class _OCRScannerScreenState extends State<OCRScannerScreen> {
     }
   }
 
+  // --- (التعديل: إصلاح شامل للدالة) ---
+  // هذه الدالة تم تعديلها بالكامل لتعالج بيانات الصورة (Planes) بشكل صحيح
   InputImage? _createInputImageFromCameraImage(CameraImage image) {
     if (_cameraController == null) return null;
-    
+
     final camera = _cameraController!.description;
+    final sensorOrientation = camera.sensorOrientation;
+    InputImageRotation rotation;
 
-    final rotation = InputImageRotationValue.fromRawValue(
-            camera.sensorOrientation) ??
-        InputImageRotation.rotation0deg;
+    // حساب اتجاه الصورة (Rotation) بناءً على نظام التشغيل
+    if (Platform.isIOS) {
+      // iOS
+      rotation =
+          InputImageRotationValue.fromRawValue(sensorOrientation) ??
+              InputImageRotation.rotation0deg;
+    } else if (Platform.isAndroid) {
+      // Android
+      // أغلب أجهزة أندرويد تكون 90 درجة للوضع الرأسي
+      switch (sensorOrientation) {
+        case 90:
+          rotation = InputImageRotation.rotation90deg;
+          break;
+        case 270:
+          rotation = InputImageRotation.rotation270deg;
+          break;
+        case 0:
+          rotation = InputImageRotation.rotation0deg;
+          break;
+        case 180:
+          rotation = InputImageRotation.rotation180deg;
+          break;
+        default:
+          rotation = InputImageRotation.rotation90deg; // افتراضي
+      }
+    } else {
+      // أنظمة أخرى (غير محتمل)
+      rotation =
+          InputImageRotationValue.fromRawValue(sensorOrientation) ??
+              InputImageRotation.rotation0deg;
+    }
 
-    final format = InputImageFormatValue.fromRawValue(image.format.raw as int) ??
-        InputImageFormat.nv21;
+    final format =
+        InputImageFormatValue.fromRawValue(image.format.raw as int) ??
+            InputImageFormat.nv21;
 
-    return InputImage.fromBytes(
-      bytes: image.planes.first.bytes, // استخدام a single plane
-      metadata: InputImageMetadata(
-        size: Size(image.width.toDouble(), image.height.toDouble()),
-        rotation: rotation,
-        format: format,
-        bytesPerRow: image.planes.first.bytesPerRow,
-      ),
-    );
+    final imageSize =
+        Size(image.width.toDouble(), image.height.toDouble());
+
+    // --- الجزء الأهم: تجميع بيانات الصورة (Planes) ---
+    if (Platform.isAndroid) {
+      // على أندرويد (YUV format)، يجب تجميع كل الـ planes
+      final WriteBuffer allBytes = WriteBuffer();
+      for (final Plane plane in image.planes) {
+        allBytes.putUint8List(plane.bytes);
+      }
+      final bytes = allBytes.done().buffer.asUint8List();
+
+      return InputImage.fromBytes(
+        bytes: bytes,
+        metadata: InputImageMetadata(
+          size: imageSize,
+          rotation: rotation,
+          format: format, // (e.g., InputImageFormat.nv21)
+          bytesPerRow: image.planes.first
+              .bytesPerRow, // عادةً ما يكون هذا كافياً لـ ML Kit
+        ),
+      );
+    } else if (Platform.isIOS) {
+      // على iOS (BGRA format)، الـ plane الأول كافٍ
+      return InputImage.fromBytes(
+        bytes: image.planes.first.bytes,
+        metadata: InputImageMetadata(
+          size: imageSize,
+          rotation: rotation,
+          format: format, // (e.g., InputImageFormat.bgra8888)
+          bytesPerRow: image.planes.first.bytesPerRow,
+        ),
+      );
+    }
+
+    // fallback (لن يحدث غالباً)
+    return null;
   }
+  // --- (نهاية التعديل) ---
 
   Future<void> _saveNumberToFirestore() async {
     if (_recognizedNumber.isEmpty) {
