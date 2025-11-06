@@ -576,7 +576,7 @@ class UserSelectionScreen extends StatelessWidget {
       floatingActionButton: IconButton(onPressed: (){
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AuthWrapper()),
+              MaterialPageRoute(builder: (context) => const OCRScannerScreen(userId: '10',)),
             );
       }, icon: Icon(Icons.abc)),
       body: SafeArea(
