@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mykids/english.dart';
 import 'package:mykids/ocr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:provider/provider.dart';
@@ -585,6 +586,15 @@ class UserSelectionScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                IconButton(onPressed: (){
+                   Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                     const LevelsScreen()
+                                 
+                          ));
+                  // LevelsScreen();
+                }, icon: Icon(Icons.abc_outlined)),
                 Text(
                   'من سيتعلم اليوم؟',
                   style: TextStyle(
