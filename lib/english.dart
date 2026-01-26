@@ -283,12 +283,13 @@ class _WordDetailScreenState extends State<WordDetailScreen> with SingleTickerPr
             isScrollable: true,
             tabs: const [
               Tab(text: 'الكلمات'),
-              Tab(text: 'العربية'),  
+              
               Tab(text: 'L1'),     
               Tab(text: 'L2'),     
               Tab(text: 'L3'),     
               Tab(text: 'L4'),     
-              Tab(text: 'L5'),     
+              Tab(text: 'L5'),   
+               Tab(text: 'العربية'),   
             ],
           ),
         ),
@@ -298,12 +299,13 @@ class _WordDetailScreenState extends State<WordDetailScreen> with SingleTickerPr
               controller: _tabController,
               children: [
                 _buildWordsTab(),
-                _buildBaseArabicTab(),
+                
                 _buildStoryLevelTab(1),
                 _buildStoryLevelTab(2),
                 _buildStoryLevelTab(3),
                 _buildStoryLevelTab(4),
                 _buildStoryLevelTab(5),
+                _buildBaseArabicTab(),
               ],
             ),
             if (isLoading)
