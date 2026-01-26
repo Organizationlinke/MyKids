@@ -77741,7 +77741,7 @@ c=t.z
 b=J.dZ(m.f,new A.aoX(),c).aA(0,", ")
 l="      Create a creative and educational story suitable for English learners at level A2 (Elementary).\n      The story must be simple, using clear grammar and common vocabulary, based on these words: ["+b+'].\n      \n      Return ONLY a JSON object with this exact structure:\n      {\n        "title": "A catchy simple title",\n        "story_en": "The full story in simple English (Level A2)",\n        "story_ar": "The full story translated into natural Arabic",\n        "levels": {\n          "1": "The Arabic story but with ONLY the specific words ['+b+'] kept in English.",\n          "2": "The Arabic story where the specific words and 25% of other simple sentences are translated to English.",\n          "3": "The Arabic story where the specific words and 50% of the story are in English.",\n          "4": "The Arabic story where 75% of the content is in English.",\n          "5": "The full English story at Level A2 (same as story_en)."\n        }\n      }\n      Ensure the story is engaging and appropriate for a beginner-level student.\n    '
 p=4
-a=A.d9("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyBKcoraXz2NNtooOvPbZBbozIoOrFaRr7s",0,null)
+a=A.d9("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyCzfQLhhE3HsAFlRtCFVny3JPaVNAS-c5E",0,null)
 a0=t.N
 a1=A.a0(["Content-Type","application/json"],a0,a0)
 s=7
