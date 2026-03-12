@@ -4532,7 +4532,7 @@ class _AIGeneratorScreenState extends State<AIGeneratorScreen> {
         "paragraph": "A story around 50 words",
         "questions": [{"text": "...", "answer": "...", "type": "fact", "time": 10}]
       }
-      Generate EXACTLY 5 questions for this demo.
+      Generate EXACTLY 20 questions for this demo.
       ''';
 
       final response = await model.generateContent([Content.text(prompt)]);
