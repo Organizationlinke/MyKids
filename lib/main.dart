@@ -11,10 +11,11 @@ import 'package:audioplayers/audioplayers.dart';
 
 // --- (A) معلومات Supabase الخاصة بك ---
 // قم بلصق نفس المعلومات الموجودة في ملف HTML
-const String supabaseUrl = 'https://qsvhdpitcljewzqjqhbe.supabase.co';
-const String supabaseAnnonKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmhkcGl0Y2xqZXd6cWpxaGJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NDYwMTksImV4cCI6MjA2OTUyMjAxOX0.YH-RR0w03qgYcpHQM-eygczVuheNljrbvXm6i-9uSwM';
-
+// const String supabaseUrl = 'https://qsvhdpitcljewzqjqhbe.supabase.co';
+// const String supabaseAnnonKey =
+//     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmhkcGl0Y2xqZXd6cWpxaGJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NDYwMTksImV4cCI6MjA2OTUyMjAxOX0.YH-RR0w03qgYcpHQM-eygczVuheNljrbvXm6i-9uSwM';
+const String supabaseUrl = 'https://xozlmszjpnnojmwllmhn.supabase.co';
+const String supabaseAnnonKey ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhvemxtc3pqcG5ub2ptd2xsbWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTQ3MTQsImV4cCI6MjA5NjEzMDcxNH0.ph0rWg-JQPCjzEP-JZdJ-8OtH0sjNm9QILB5iBlewTY';
 // --- (B) الروابط الصوتية الثابتة ---
 const String correctAudioUrl =
     'https://qsvhdpitcljewzqjqhbe.supabase.co/storage/v1/object/public/sounds/feedback_sounds/bravo_correct.wav';
@@ -367,7 +368,7 @@ class AppState extends ChangeNotifier {
     notifyListeners();
 
     // 1. تحديث قاعدة البيانات بالنتيجة
-    await _updateQuestionStatus(_currentQuestion!.id, isCorrect);
+    // await _updateQuestionStatus(_currentQuestion!.id, isCorrect);
 
     // 2. تشغيل الصوت (صحيح أو خطأ)
     final audioPlayerToUse =
